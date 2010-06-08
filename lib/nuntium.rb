@@ -21,7 +21,7 @@ class Nuntium
   # Gets a country given its iso2 or iso3 code, or nil if a country with that iso does not exist.
   def country(iso)
     c = self.class.get "#{@url}/api/countries/#{iso}.json"
-    c.strip.empty? ? nil : c
+    c.class <= String ? nil : c
   end
   
   # Gets the list of carriers known to Nuntium that belong to a country, given its
@@ -37,7 +37,7 @@ class Nuntium
   # Gets a carrier given its guid, or nil if a carrier with that guid does not exist.
   def carrier(guid)
     c = self.class.get "#{@url}/api/carriers/#{guid}.json"
-    c.strip.empty? ? nil : c
+    c.class <= String ? nil : c
   end
   
   # Returns the list of channels belonging to the application or that don't
