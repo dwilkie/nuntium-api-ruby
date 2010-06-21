@@ -1,3 +1,12 @@
+# Provides access to the Nuntium Public API.
+#
+# === Install
+#
+#   gem install nuntium_api
+#
+# === Example
+#
+#   api = Nuntium.new 'service_url', 'account_name', 'application_name', 'application_password'
 require 'rubygems'
 require 'httparty'
 
@@ -26,7 +35,7 @@ class Nuntium
   end
   
   # Gets the list of carriers known to Nuntium that belong to a country, given its
-  # iso2 or iso3 code.
+  # iso2 or iso3 code. Gets all carriers if no country is specified.
   def carriers(country_id = nil)
     if country_id
       self.class.get "#{@url}/api/carriers.json", :query => {:country_id => country_id}
@@ -61,18 +70,14 @@ class Nuntium
   end
   
   # Creates a channel.
-  # Example:
-  #   create_channel :name => 'foo', :kind => 'qst_server', :protocol => 'sms',
-  #     :configuration => {:password => 'bar'}
+  #   create_channel :name => 'foo', :kind => 'qst_server', :protocol => 'sms', :configuration => {:password => 'bar'}
   def create_channel(channel)
     write_configuration channel
     self.class.post "#{@url}/api/channels.json", :basic_auth => @auth, :body => channel
   end
   
-  # Creates a channel.
-  # Example:
-  #   update_channel :name => 'foo', :kind => 'qst_server', :protocol => 'sms',
-  #     :configuration => {:password => 'bar'}
+  # Updates a channel.
+  #   update_channel :name => 'foo', :kind => 'qst_server', :protocol => 'sms', :configuration => {:password => 'bar'}
   def update_channel(channel)
     write_configuration channel
     self.class.put "#{@url}/api/channels/#{channel['name']}.json", :basic_auth => @auth, :body => channel
@@ -85,9 +90,7 @@ class Nuntium
   
   # Returns the list of candidate channels when simulating routing the given
   # AO message.
-  # Example:
-  #   candidate_channels_for_ao :from => 'sms://1', :to => 'sms://2', 
-  #     :subject => 'hello', :body => 'hi!'
+  #   candidate_channels_for_ao :from => 'sms://1', :to => 'sms://2', :subject => 'hello', :body => 'hi!'
   def candidate_channels_for_ao(message)
     chans = self.class.get "#{@url}/api/candidate/channels.json", :basic_auth => @auth, :body => message
     return nil if chans.class <= String
@@ -96,8 +99,7 @@ class Nuntium
     end
   end
   
-  # Sends an AO message.
-  # Example:
+  # Sends an AO message. Returns an HTTParty::Response instance.
   #   send_ao :from => 'sms://1', :to => 'sms://2', :subject => 'hello', :body => 'hi!'
   def send_ao(message)
     self.class.post "#{@url}/#{@account}/#{@application}/send_ao", :basic_auth => @auth, :body => message
