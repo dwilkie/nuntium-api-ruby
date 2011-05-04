@@ -108,6 +108,17 @@ class Nuntium
     self.class.post "#{@url}/#{@account}/#{@application}/send_ao.json", :basic_auth => @auth, :body => body
   end
 
+  # Gets the custom attributes specified for a given address. Returns a hash with the attributes
+  def get_custom_attributes(address)
+    attrs = self.class.get "#{@url}/api/custom_attributes?address=#{address}", :basic_auth => @auth
+    return nil unless attrs.is_a? Hash
+    attrs
+  end
+
+  def set_custom_attributes(address, attributes)
+    self.class.post "#{@url}/api/custom_attributes?address=#{address}", :basic_auth => @auth, :body => attributes
+  end
+
   private
 
   def write_configuration(channel)
