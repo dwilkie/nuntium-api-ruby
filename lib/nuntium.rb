@@ -104,8 +104,11 @@ class Nuntium
   #   send_ao :from => 'sms://1', :to => 'sms://2', :subject => 'hello', :body => 'hi!'
   #   send_ao [{:from => 'sms://1', :to => 'sms://2', :subject => 'hello', :body => 'hi!'}, {...}]
   def send_ao(messages)
-    body = messages.is_a?(Array) ? messages.to_json : messages
-    self.class.post "#{@url}/#{@account}/#{@application}/send_ao.json", :basic_auth => @auth, :body => body
+    if messages.is_a? Array
+      self.class.post "#{@url}/#{@account}/#{@application}/send_ao.json", :basic_auth => @auth, :body => messages.to_json
+    else
+      self.class.post "#{@url}/#{@account}/#{@application}/send_ao", :basic_auth => @auth, :body => messages
+    end
   end
 
   # Gets the custom attributes specified for a given address. Returns a hash with the attributes
