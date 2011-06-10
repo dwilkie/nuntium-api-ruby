@@ -41,4 +41,9 @@ describe Nuntium do
     @api.set_custom_attributes 'sms://foo', {:bar => 123}
   end
 
+  it "gets ao" do
+    Nuntium.should_receive('get').with('service_url/account_name/application_name/get_ao.json?token=my_token', @auth)
+    @api.get_ao 'my_token'
+  end
+
 end

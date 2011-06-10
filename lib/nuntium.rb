@@ -100,15 +100,27 @@ class Nuntium
     end
   end
 
-  # Sends one or many AO messages. Returns an HTTParty::Response instance.
+  # Sends one or many AO messages.
+  # Returns an enhanced HTTParty::Response instance with id, guid and token readers that matches those x-headers
+  # returned by Nuntium.
+  # To send a token, just include it in the message as :token => 'my_token'
   #   send_ao :from => 'sms://1', :to => 'sms://2', :subject => 'hello', :body => 'hi!'
   #   send_ao [{:from => 'sms://1', :to => 'sms://2', :subject => 'hello', :body => 'hi!'}, {...}]
   def send_ao(messages)
-    if messages.is_a? Array
+    response = if messages.is_a? Array
       self.class.post "#{@url}/#{@account}/#{@application}/send_ao.json", :basic_auth => @auth, :body => messages.to_json
     else
       self.class.post "#{@url}/#{@account}/#{@application}/send_ao", :basic_auth => @auth, :body => messages
     end
+    def response.id; headers['x-nuntium-id']; end
+    def response.token; headers['x-nuntium-token']; end
+    def response.guid; headers['x-nuntium-guid']; end
+    response
+  end
+
+  # Gets AO messages that have the given token. The response is an array of hashes with the messages' attributes.
+  def get_ao(token)
+    self.class.get "#{@url}/#{@account}/#{@application}/get_ao.json?token=#{token}", :basic_auth => @auth
   end
 
   # Gets the custom attributes specified for a given address. Returns a hash with the attributes
