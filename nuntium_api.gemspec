@@ -1,10 +1,10 @@
 Gem::Specification.new do |s|
   s.name = %q{nuntium_api}
-  s.version = "0.10"
+  s.version = "0.11"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["InsTEDD"]
-  s.date = %q{2010-06-08}
+  s.date = %q{2011-06-10}
   s.description = %q{Access the Nuntium API in ruby. Nuntium is an open source and free platform -developed by InSTEDD- that allows applications to send and receive all type of messages. Examples of messages are sms, emails and twitter direct messages.}
   s.email = %q{aborenszweig@manas.com.ar}
   s.homepage = %q{http://code.google.com/p/nuntium-api-ruby}
