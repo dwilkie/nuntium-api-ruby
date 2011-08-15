@@ -65,23 +65,23 @@ class Nuntium
   # Returns a chnanel given its name, or nil if the channel doesn't exist
   def channel(name)
     channel = self.class.get "#{@url}/api/channels/#{name}.json", :basic_auth => @auth
-    return nil if channel.class <= String
-    read_configuration channel
-    channel
+    return_channel channel
   end
 
   # Creates a channel.
   #   create_channel :name => 'foo', :kind => 'qst_server', :protocol => 'sms', :configuration => {:password => 'bar'}
   def create_channel(channel)
     write_configuration channel
-    self.class.post "#{@url}/api/channels.json", :basic_auth => @auth, :body => channel.to_json
+    channel = self.class.post "#{@url}/api/channels.json", :basic_auth => @auth, :body => channel.to_json
+    return_channel channel
   end
 
   # Updates a channel.
   #   update_channel :name => 'foo', :kind => 'qst_server', :protocol => 'sms', :configuration => {:password => 'bar'}
   def update_channel(channel)
     write_configuration channel
-    self.class.put "#{@url}/api/channels/#{channel['name']}.json", :basic_auth => @auth, :body => channel.to_json
+    channel = self.class.put "#{@url}/api/channels/#{channel['name']}.json", :basic_auth => @auth, :body => channel.to_json
+    return_channel channel
   end
 
   # Deletes a chnanel given its name.
@@ -150,6 +150,12 @@ class Nuntium
       configuration[hash['name']] = hash['value']
     end
     channel['configuration'] = configuration
+  end
+  
+  def return_channel(channel)
+    return nil if channel.class <= String
+    read_configuration channel
+    channel
   end
 
 end
