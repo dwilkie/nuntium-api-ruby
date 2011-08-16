@@ -64,24 +64,24 @@ class Nuntium
 
   # Returns a chnanel given its name, or nil if the channel doesn't exist
   def channel(name)
-    channel = self.class.get "#{@url}/api/channels/#{name}.json", :basic_auth => @auth
-    return_channel channel
+    response = self.class.get "#{@url}/api/channels/#{name}.json", :basic_auth => @auth
+    return_channel response
   end
 
   # Creates a channel.
   #   create_channel :name => 'foo', :kind => 'qst_server', :protocol => 'sms', :configuration => {:password => 'bar'}
   def create_channel(channel)
     write_configuration channel
-    channel = self.class.post "#{@url}/api/channels.json", :basic_auth => @auth, :body => channel.to_json
-    return_channel channel
+    response = self.class.post "#{@url}/api/channels.json", :basic_auth => @auth, :body => channel.to_json
+    return_channel response
   end
 
   # Updates a channel.
   #   update_channel :name => 'foo', :kind => 'qst_server', :protocol => 'sms', :configuration => {:password => 'bar'}
   def update_channel(channel)
     write_configuration channel
-    channel = self.class.put "#{@url}/api/channels/#{channel['name']}.json", :basic_auth => @auth, :body => channel.to_json
-    return_channel channel
+    response = self.class.put "#{@url}/api/channels/#{channel['name']}.json", :basic_auth => @auth, :body => channel.to_json
+    return_channel response
   end
 
   # Deletes a chnanel given its name.
@@ -152,10 +152,16 @@ class Nuntium
     channel['configuration'] = configuration
   end
   
-  def return_channel(channel)
-    return nil if channel.class <= String
-    read_configuration channel
-    channel
+  def return_channel(response)
+    return nil if response.class <= String
+    if response.response.class <= Net::HTTPSuccess
+      channel = response.parsed_response.with_indifferent_access
+      read_configuration channel 
+      channel
+    else
+      # TODO should wrap in exception
+      response
+    end
   end
 
 end
