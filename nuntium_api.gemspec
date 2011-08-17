@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://code.google.com/p/nuntium-api-ruby}
   s.require_paths = ["lib"]
   s.files = [
+    "lib/nuntium_api.rb",
     "lib/nuntium.rb"
   ]
   s.rubygems_version = %q{1.3.7}
