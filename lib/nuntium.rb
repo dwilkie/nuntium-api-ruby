@@ -80,7 +80,7 @@ class Nuntium
   #   update_channel :name => 'foo', :kind => 'qst_server', :protocol => 'sms', :configuration => {:password => 'bar'}
   def update_channel(channel)
     write_configuration channel
-    response = self.class.put "#{@url}/api/channels/#{channel['name']}.json", :basic_auth => @auth, :body => channel.to_json
+    response = self.class.put "#{@url}/api/channels/#{channel['name'] || channel[:name]}.json", :basic_auth => @auth, :body => channel.to_json
     return_channel response
   end
 
@@ -146,17 +146,17 @@ class Nuntium
 
   def read_configuration(channel)
     configuration = {}
-    channel['configuration'].each do |hash|
-      configuration[hash['name']] = hash['value']
+    (channel['configuration'] || channel[:configuration]).each do |hash|
+      configuration[hash['name'] || hash[:name]] = hash['value'] || hash[:value]
     end
     channel['configuration'] = configuration
   end
-  
+
   def return_channel(response)
     return nil if response.class <= String
-    if response.response.class <= Net::HTTPSuccess
+    if response.respond_to?(:response) && response.response.class <= Net::HTTPSuccess
       channel = response.parsed_response.with_indifferent_access
-      read_configuration channel 
+      read_configuration channel
       channel
     else
       # TODO should wrap in exception
