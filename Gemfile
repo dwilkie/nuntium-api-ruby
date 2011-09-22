@@ -1,6 +1,6 @@
 source :rubygems
 
-gem 'httparty'
+gem 'rest-client', :require => 'rest_client'
 gem 'json'
 
 group :test do
