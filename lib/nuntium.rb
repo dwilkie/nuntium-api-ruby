@@ -262,9 +262,7 @@ class Nuntium
     resource = RestClient::Resource.new @url, @options
     resource = resource[path].get
     yield resource, nil
-  rescue RestClient::Exception => ex
-    yield nil, ex
-  rescue Errno::ECONNREFUSED => ex
+  rescue => ex
     yield nil, ex
   end
 
@@ -290,9 +288,7 @@ class Nuntium
     resource = RestClient::Resource.new @url, @options
     resource = resource[path].post(data)
     yield resource, nil
-  rescue RestClient::Exception => ex
-    yield nil, ex
-  rescue Errno::ECONNREFUSED => ex
+  rescue  => ex
     yield nil, ex
   end
 
@@ -300,9 +296,7 @@ class Nuntium
     resource = RestClient::Resource.new @url, @options
     resource = resource[path].put(data)
     yield resource, nil
-  rescue RestClient::Exception => ex
-    yield nil, ex
-  rescue Errno::ECONNREFUSED => ex
+  rescue => ex
     yield nil, ex
   end
 
@@ -310,9 +304,7 @@ class Nuntium
     resource = RestClient::Resource.new @url, @options
     resource = resource[path].delete
     yield resource, nil
-  rescue RestClient::Exception => ex
-    yield nil, ex
-  rescue Errno::ECONNREFUSED => ex
+  rescue => ex
     yield nil, ex
   end
 
