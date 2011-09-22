@@ -121,7 +121,13 @@ class Nuntium
   #
   # Raises Nuntium::Exception if something goes wrong.
   def channel(name)
-    get_channels "/api/channels/#{name}.json"
+    get("/api/channels/#{name}.json") do |response, error|
+      raise Nuntium::Exception.new error.message if error
+
+      channel = JSON.parse response.body
+      read_configuration channel
+      channel
+    end
   end
 
   # Creates a channel.
