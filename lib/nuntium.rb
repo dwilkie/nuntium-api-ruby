@@ -258,18 +258,6 @@ class Nuntium
     channel['configuration'] = Hash[channel['configuration'].map { |e| [e['name'], e['value']] }]
   end
 
-  def return_channel(response)
-    return nil if response.class <= String
-    if response.respond_to?(:response) && response.response.class <= Net::HTTPSuccess
-      channel = response.parsed_response.with_indifferent_access
-      read_configuration channel
-      channel
-    else
-      # TODO should wrap in exception
-      response
-    end
-  end
-
   def get(path)
     resource = RestClient::Resource.new @url, @options
     resource = resource[path].get
