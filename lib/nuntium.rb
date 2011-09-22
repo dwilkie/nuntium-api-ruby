@@ -306,7 +306,7 @@ class Nuntium
     yield nil, ex
   end
 
-  def delete(path, data)
+  def delete(path)
     resource = RestClient::Resource.new @url, @options
     resource = resource[path].delete
     yield resource, nil
