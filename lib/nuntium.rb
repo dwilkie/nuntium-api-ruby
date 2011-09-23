@@ -112,7 +112,10 @@ class Nuntium
       raise Nuntium::Exception.new error.message if error
 
       channels = JSON.parse response.body
-      channels.each { |channel| read_configuration channel }
+      channels.each do |channel|
+        read_configuration channel
+        with_indifferent_access channel
+      end
       channels
     end
   end
@@ -126,7 +129,7 @@ class Nuntium
 
       channel = JSON.parse response.body
       read_configuration channel
-      channel
+      with_indifferent_access channel
     end
   end
 
@@ -145,7 +148,7 @@ class Nuntium
 
       channel = JSON.parse response.body
       read_configuration channel
-      channel
+      with_indifferent_access channel
     end
   end
 
@@ -166,7 +169,7 @@ class Nuntium
 
       channel = JSON.parse response.body
       read_configuration channel
-      channel
+      with_indifferent_access channel
     end
   end
 
@@ -208,17 +211,19 @@ class Nuntium
       post "/#{@account}/#{@application}/send_ao.json", messages.to_json do |response, error|
         raise Nuntium::Exception.new error.message if error
 
-        {:token => response.headers[:x_nuntium_token]}
+        with_indifferent_access({:token => response.headers[:x_nuntium_token]})
       end
     else
       get "/#{@account}/#{@application}/send_ao?#{to_query messages}" do |response, error|
         raise Nuntium::Exception.new error.message if error
 
-        {
-          :id => response.headers[:x_nuntium_id],
-          :guid => response.headers[:x_nuntium_guid],
-          :token => response.headers[:x_nuntium_token],
-        }
+        with_indifferent_access(
+          {
+            :id => response.headers[:x_nuntium_id],
+            :guid => response.headers[:x_nuntium_guid],
+            :token => response.headers[:x_nuntium_token],
+          }
+        )
       end
     end
   end
@@ -280,7 +285,9 @@ class Nuntium
     get(path) do |response, error|
       raise Nuntium::Exception.new error.message if error
 
-      JSON.parse response.body
+      elem = JSON.parse response.body
+      elem.map! { |x| with_indifferent_access x } if elem.is_a? Array
+      elem
     end
   end
 
@@ -289,7 +296,10 @@ class Nuntium
       raise Nuntium::Exception.new error.message if error
 
       channels = JSON.parse response.body
-      channels.each { |channel| read_configuration channel }
+      channels.each do |channel|
+        read_configuration channel
+        with_indifferent_access channel
+      end
       channels
     end
   end
@@ -338,5 +348,10 @@ class Nuntium
       first = false
     end
     query
+  end
+
+  def with_indifferent_access(hash)
+    hash = hash.with_indifferent_access if hash.respond_to? :with_indifferent_access
+    hash
   end
 end
