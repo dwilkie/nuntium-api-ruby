@@ -137,11 +137,13 @@ class Nuntium
   # Raises Nuntium::Exception if something goes wrong. You can access specific errors on properties via the properties
   # accessor of the exception.
   def create_channel(channel)
+    channel = channel.dup
+
     write_configuration channel
     post "/api/channels.json", channel.to_json do |response, error|
       handle_channel_error error if error
 
-      channel = JSON.parse response
+      channel = JSON.parse response.body
       read_configuration channel
       channel
     end
@@ -154,6 +156,8 @@ class Nuntium
   # Raises Nuntium::Exception if something goes wrong. You can access specific errors on properties via the properties
   # accessor of the exception.
   def update_channel(channel)
+    channel = channel.dup
+
     write_configuration channel
     channel_name = channel['name'] || channel[:name]
 
@@ -294,7 +298,7 @@ class Nuntium
     resource = RestClient::Resource.new @url, @options
     resource = resource[path].post(data)
     yield resource, nil
-  rescue  => ex
+  rescue => ex
     yield nil, ex
   end
 
