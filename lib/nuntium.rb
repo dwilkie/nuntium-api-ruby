@@ -112,7 +112,7 @@ class Nuntium
       raise Nuntium::Exception.new error.message if error
 
       channels = JSON.parse response.body
-      channels.each do |channel|
+      channels.map! do |channel|
         read_configuration channel
         with_indifferent_access channel
       end
@@ -296,7 +296,7 @@ class Nuntium
       raise Nuntium::Exception.new error.message if error
 
       channels = JSON.parse response.body
-      channels.each do |channel|
+      channels.map! do |channel|
         read_configuration channel
         with_indifferent_access channel
       end
