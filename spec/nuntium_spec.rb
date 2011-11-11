@@ -109,7 +109,13 @@ describe Nuntium do
     api.set_custom_attributes('foo', :application => :bar)
   end
 
-  def should_receive_http_get(path, body)
+  it "creates twitter friendship" do
+    should_receive_http_get '/api/channels/twit/twitter/friendships/create?user=foo&follow=true'
+
+    api.twitter_friendship_create 'twit', 'foo', true
+  end
+
+  def should_receive_http_get(path, body = nil)
     resource = mock 'resource'
     RestClient::Resource.should_receive(:new).with(url, options).and_return(resource)
 
@@ -119,7 +125,7 @@ describe Nuntium do
     resource3 = mock 'resource3'
     resource2.should_receive(:get).and_return(resource3)
 
-    resource3.should_receive(:body).and_return(body)
+    resource3.should_receive(:body).and_return(body) if body
   end
 
   def should_receive_http_get_with_headers(path, headers)

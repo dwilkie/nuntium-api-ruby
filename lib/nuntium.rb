@@ -194,8 +194,6 @@ class Nuntium
   end
 
   # Sends one or many AO messages.
-  # Returns an enhanced HTTParty::Response instance with id, guid and token readers that matches those x-headers
-  # returned by Nuntium.
   #
   # To send a token, just include it in the message as :token => 'my_token'
   #
@@ -250,6 +248,20 @@ class Nuntium
       raise Nuntium::Exception.new error.message if error
 
       nil
+    end
+  end
+
+
+  # Creates a friendship between the channel's twitter account and the given user.
+  # Returns the response from twitter.
+  # Refer to Twitter's documentation: https://dev.twitter.com/docs/api/1/post/friendships/create
+  #
+  # Raises Nuntium::Exception if something goes wrong.
+  def twitter_friendship_create(channel_name, user, follow = true)
+    get("/api/channels/#{channel_name}/twitter/friendships/create?user=#{CGI.escape user}&follow=#{follow}") do |response, error|
+      raise Nuntium::Exception.new error.message if error
+
+      response
     end
   end
 
