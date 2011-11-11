@@ -265,6 +265,17 @@ class Nuntium
     end
   end
 
+  # Adds an xmpp conact to the xmpp account associated to the given channel.
+  #
+  # Raises Nuntium::Exception if something goes wrong.
+  def xmpp_add_contact(channel_name, jid)
+    get("/api/channels/#{channel_name}/xmpp/add_contact?jid=#{CGI.escape jid}") do |response, error|
+      raise Nuntium::Exception.new error.message if error
+
+      response
+    end
+  end
+
   private
 
   def write_configuration(channel)

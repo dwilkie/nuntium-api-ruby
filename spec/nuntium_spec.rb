@@ -115,6 +115,12 @@ describe Nuntium do
     api.twitter_friendship_create 'twit', 'foo', true
   end
 
+  it "adds xmpp contact" do
+    should_receive_http_get "/api/channels/chan/xmpp/add_contact?jid=#{CGI.escape 'foo@bar.com'}"
+
+    api.xmpp_add_contact 'chan', 'foo@bar.com'
+  end
+
   def should_receive_http_get(path, body = nil)
     resource = mock 'resource'
     RestClient::Resource.should_receive(:new).with(url, options).and_return(resource)
