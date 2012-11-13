@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{nuntium_api}
-  s.version = "0.20"
+  s.version = "0.21"
   s.platform    = Gem::Platform::RUBY
   s.authors = ["InsTEDD"]
   s.email = "aborenszweig@manas.com.ar"
