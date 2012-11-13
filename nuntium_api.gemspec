@@ -1,35 +1,24 @@
 Gem::Specification.new do |s|
   s.name = %q{nuntium_api}
   s.version = "0.20"
-
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.platform    = Gem::Platform::RUBY
   s.authors = ["InsTEDD"]
-  s.date = %q{2011-11-11}
-  s.description = %q{Access the Nuntium API in ruby. Nuntium is an open source and free platform -developed by InSTEDD- that allows applications to send and receive all type of messages. Examples of messages are sms, emails and twitter direct messages.}
-  s.email = %q{aborenszweig@manas.com.ar}
-  s.homepage = %q{http://code.google.com/p/nuntium-api-ruby}
-  s.require_paths = ["lib"]
+  s.email = "aborenszweig@manas.com.ar"
+  s.summary = "Access the Nuntium API in ruby"
+  s.description = "Access the Nuntium API in ruby. Nuntium is an open source and free platform -developed by InSTEDD- that allows applications to send and receive all type of messages. Examples of messages are sms, emails and twitter direct messages."
+  s.homepage = "https://bitbucket.org/instedd/nuntium-api-ruby/src"
   s.files = [
     "lib/nuntium_api.rb",
     "lib/nuntium.rb",
     "lib/nuntium/exception.rb",
   ]
-  s.rubygems_version = %q{1.3.7}
-  s.summary = %q{Access the Nuntium API in ruby}
+  s.require_path = "lib"
 
-  if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
-    s.specification_version = 3
+  s.rdoc_options = %w{--charset=UTF-8}
+  s.extra_rdoc_files = %w{README.md}
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rest-client>, [">= 0"])
-      s.add_runtime_dependency(%q<json>, [">= 0"])
-    else
-      s.add_dependency(%q<rest-client>, [">= 0"])
-      s.add_dependency(%q<json>, [">= 0"])
-    end
-  else
-    s.add_dependency(%q<rest-client>, [">= 0"])
-  end
+  s.add_dependency "rest-client"
+  s.add_dependency "json"
+
+  s.add_development_dependency "rspec"
 end
-
