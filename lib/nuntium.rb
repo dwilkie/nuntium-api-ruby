@@ -265,6 +265,14 @@ class Nuntium
     end
   end
 
+  # Returns a URL to authorize the given twitter channel, which will eventually redirect
+  # to the given callback URL.
+  #
+  # Raises Nuntium::Exception if something goes wrong.
+  def twitter_authorize(channel_name, callback)
+    get_text("/api/channels/#{channel_name}/twitter/authorize?callback=#{CGI.escape callback}")
+  end
+
   # Adds an xmpp conact to the xmpp account associated to the given channel.
   #
   # Raises Nuntium::Exception if something goes wrong.
@@ -311,6 +319,14 @@ class Nuntium
       elem = JSON.parse response.body
       elem.map! { |x| with_indifferent_access x } if elem.is_a? Array
       elem
+    end
+  end
+
+  def get_text(path)
+    get(path) do |response, error|
+      raise Nuntium::Exception.new error.message if error
+
+      response.body
     end
   end
 

@@ -48,7 +48,7 @@ describe Nuntium do
   end
 
   it "creates channel" do
-    channel_json = %({"name":"Argentina","configuration":[{"value":"bar","name":"foo"}]})
+    channel_json = %({"name":"Argentina","configuration":[{"name":"foo","value":"bar"}]})
     should_receive_http_post '/api/channels.json', channel_json, channel_json
 
     channel = {'name' => 'Argentina', 'configuration' => {'foo' => 'bar'}}
@@ -57,7 +57,7 @@ describe Nuntium do
   end
 
   it "updates channel", :focus => true do
-    channel_json = %({"name":"Argentina","configuration":[{"value":"bar","name":"foo"}]})
+    channel_json = %({"name":"Argentina","configuration":[{"name":"foo","value":"bar"}]})
     should_receive_http_put '/api/channels/Argentina.json', channel_json, channel_json
 
     channel = {'name' => 'Argentina', 'configuration' => {'foo' => 'bar'}}
@@ -113,6 +113,13 @@ describe Nuntium do
     should_receive_http_get '/api/channels/twit/twitter/friendships/create?user=foo&follow=true'
 
     api.twitter_friendship_create 'twit', 'foo', true
+  end
+
+  it "authorizes twitter channel" do
+    should_receive_http_get '/api/channels/twit/twitter/authorize?callback=foo', "http://bar"
+
+    url = api.twitter_authorize 'twit', 'foo'
+    url.should eq("http://bar")
   end
 
   it "adds xmpp contact" do
