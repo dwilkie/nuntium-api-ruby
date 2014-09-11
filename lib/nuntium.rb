@@ -66,6 +66,7 @@ class Nuntium
     @options = {
       :user => "#{account}/#{application}",
       :password => password,
+      :verify_ssl => false,
       :headers => {:content_type => 'application/json'},
     }
   end

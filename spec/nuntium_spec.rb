@@ -2,7 +2,7 @@ require(File.expand_path("../../lib/nuntium",  __FILE__))
 
 describe Nuntium do
   let(:url) { "http://example.com" }
-  let(:options) { {:user => "account/application", :password => "password", :headers => {:content_type => 'application/json'}} }
+  let(:options) { {:user => "account/application", :verify_ssl => false, :password => "password", :headers => {:content_type => 'application/json'}} }
   let(:api) { Nuntium.new url, "account", "application", "password" }
 
   it "gets countries" do
