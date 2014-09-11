@@ -2,8 +2,8 @@ Gem::Specification.new do |s|
   s.name = %q{nuntium_api}
   s.version = "0.21"
   s.platform    = Gem::Platform::RUBY
-  s.authors = ["InsTEDD"]
-  s.email = "aborenszweig@manas.com.ar"
+  s.authors = ["FUCK InsTEDD"]
+  s.email = "dwilkie@gmail.com"
   s.summary = "Access the Nuntium API in ruby"
   s.description = "Access the Nuntium API in ruby. Nuntium is an open source and free platform -developed by InSTEDD- that allows applications to send and receive all type of messages. Examples of messages are sms, emails and twitter direct messages."
   s.homepage = "https://bitbucket.org/instedd/nuntium-api-ruby/src"
